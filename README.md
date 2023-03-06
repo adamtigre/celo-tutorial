@@ -1,10 +1,10 @@
 # Getting Started with Celo and Hardhat
 
-- Celo: Celo is a platform acting as a global payment infrastructure for cryptocurrencies that aims to target mobile users. To this end, Celo's goal is for financial activity to be accessible to anyone globally thanks to its ability for payments to be sent to and from any phone number in the world. [Learn more](https://www.kraken.com/learn/what-is-celo) or visit [Celo documentation](https://docs.celo.org)
+-Celo: Celo is a platform acting as a global payment infrastructure for cryptocurrencies that aims to target mobile users. To this end, Celo's goal is for the financial activity to be accessible to anyone globally thanks to its ability for payments to be sent to and from any phone number in the world. [Learn more](https://www.kraken.com/learn/what-is-celo) or visit [Celo documentation](https://docs.celo.org)
 - Hardhat:  Hardhat is a development environment that helps developers in testing, compiling, deploying, and debugging dApps on the Ethereum blockchain. [Learn more](https://hardhat.org)
-- We want to build a mini project to explain what celo and hardhat are.
+- We want to build a mini project to explain what Celo and Hardhat are.
 
-# Prerequisite
+## Prerequisite
 - NodeJs
 - NPM
 - VSCode
@@ -13,24 +13,24 @@
 - Command line
 
 
-# What you will take from this tutorial
-- How to write solidity codes
-- How to deploy solidity codes to celo blockchain
-- How to use hardhat to compile and deploy your solidity code
+## What you will learn from this tutorial
+- How to write Solidity codes
+- How to deploy Solidity codes to the Celo blockchain
+- How to use Hardhat to compile and deploy your solidity code
 - Usage of the command line
 
-# Aims 
-The aim of this tutorial is to teach you the following:
-- How to write smart contract with solidity
-- How to deploy the smart contrat using Hardhat
+## Aims 
+This tutorial aims to teach you the following:
+- How to write a smart contract with Solidity
+- How to deploy the smart contract using Hardhat
 - Interacting with Celo Testnet
 
-# Step 1: Installing hardhat
-Since we will be using Hardhat for this tutorial, the first thing to do is to install harhdat into your computer. Follow the steps below to install hardhat into your computer system.
+## Step 1: Installing hardhat
+Since we will be using Hardhat for this tutorial, the first thing to do is to install Hardhat into your computer. Follow the steps below to install hardhat into your computer system.
 
-> **Note** Before you carry out the steps below, please ensure you have node and npm install on your system. If ytou don't have node install, go to [this link](https://www.guru99.com/download-install-node-js.html) to learn how to install it. npm mostly comes with node. So when you install node, you might have automatically installed npm.
+> **Note** Before you carry out the steps below, please ensure you have node and npm installed on your system. If you don't have node installed, go to [this link](https://www.guru99.com/download-install-node-js.html) to learn how to install it. Npm mostly comes with node. So when you install node, you might have automatically installed npm.
 
-- Open your terminal and navigate to the location you want to install hardhat. Alternatively, tou can create a new folder and cd into the folder.
+- Open your terminal and navigate to the location you want to install Hardhat. Alternatively, you can create a new folder and cd into the folder.
 - Confirm if you have node installed by running this command 
 ```bash
 node -v
@@ -43,38 +43,38 @@ v16.15.0
 ```bash
 npm -v
 ```
-If npm is installed correctly, you have the output
+If npm is installed correctly, you will have the output
 ```bash
 8.5.5
 ```
-- After confirming that node and npm are installed in your system, proceed to run this command to crate an hardhat boilerplate
+- After confirming that node and npm are installed in your system, proceed to run this command to create a Hardhat boilerplate
 ```bash
 npx hardhat 
 ```
-When you press enter in your keyboard after the above command, you will see somehting like this
+When you press **enter** in your keyboard after the above command, you will see somehting like this
 
 ![hardhat command output](./pictures/2-npx-hardhat-command-output.PNG)
 - Select _Create a JavaScript project_ 
-- Click enter for all other options tha twill come next
-- After completion, it will create a hardhat boilderplate for you in the current directory
-- lastly, run this command to install the hardhat package after creating the boilerplate.
+- Click enter for all other options that will come next
+- After completion, it will create a hardhat boilerplate for you in the current directory
+- Lastly, run this command to install the hardhat package after creating the boilerplate.
 ```bash
 npm install --save-dev  hardhat@^2.13.0 @nomicfoundation/hardhat-toolbox@^2.0.0
 ```
 The command will install the hardhat package and store it in the node modules folder for use in your project.
 
-Your project directory should look like this after instaling Hardhat
+Your project directory should look like this after installing Hardhat
 
 ![hardhat folder structure](./pictures/3-hh-folder-structure.PNG)
 
 # Step 2: Hardhat configuration
 
-After installing hardhat, the next step is to configure it to the taste of the project we are working on. In our case, we want to achieve the following:
-- Deploy our contract to the Celo blockchaon
+After installing Hardhat, the next step is to configure it to the taste of the project we are working on. In our case, we want to achieve the following:
+- Deploy our contract to the Celo blockchain
 - Create a file to store the Contract ABI
-- Crete another file to store the contract address
+- Create another file to store the contract address
 
-First thing to do is configure the hardhat.config.js file. This file is resnposble for all we need to connect our hardhat to the Celo blockchain as well as other configs. Paste the code below into your hardhat.config.js file.
+The first thing to do is configure the `hardhat.config.js` file. This file is responsible for all we need to connect Hardhat to the Celo blockchain as well as other configs. Paste the code below into your `hardhat.config.js` file.
 
 ```javascript
 require("@nomiclabs/hardhat-waffle");
@@ -98,11 +98,11 @@ require('dotenv').config({path: '.env'});
   },
 };
 ```
-Inside this file, we first made some imports and then crete a variable and give the variable a name `PRIVATE_KEY`. This variable stores the private key of the wallet that will be used to dpeloy the contract to Celo. To get your private key, Open your wallet (Celo extension wallet), click on the three dots on the top-right angle, click on "show account details", then click on "Export private key", enter your password and it will bring out your private key for you. Copy the private key to clipboard and return to vscode.
+Inside this file, we first made some imports and then created a variable and give the variable the name `PRIVATE_KEY`. This variable stores the private key of the wallet that will be used to deploy the contract to Celo. To get your private key, Open your wallet (Celo extension wallet), click on the three dots on the top-right angle, click on "show account details", then click on "Export private key", enter your password and it will bring out your private key for you. Copy the private key to the clipboard and return to VS Code.
 
-The next lines inthe config file above creates an configuration object and export it our of the file for hardhat to have access to. The solidity version was first specified as 0.8.0. then the network followed. We are using celo alfajores testnet and that is the network url. Lastly, our private key was passed and chain id as well.
+The next lines in the config file above create a configuration object and export it out of the file for hardhat to have access to. The solidity version was first specified as 0.8.0. then the network followed. We are using the Celo Alfajores testnet and that is the network URL. Lastly, our private key was passed, and the chain id was as well.
 
-The next file will improve is the file located in the `scripts/deploy.js`. This file is where hardhat looks when it want to deploy our smart contract. It contains javascript script that deploysu our contract to the Celo and stores the contract address as well as the ABI. Open the file, delete evrything inside and paste the code into it:
+The next file that will be changed is the file located in the `scripts/deploy.js`. This file is where hardhat looks when it wants to deploy our smart contract. It contains a Javascript script that deploys our contract to the Celo and stores the contract address as well as the ABI. Open the file, delete everything inside and paste the code into it:
 
 ```javascript
 const hre = require("hardhat");
@@ -149,49 +149,49 @@ main()
 ```
 Let us explain the code little by little
 
-First, we import hardhat and store it inside `hre`. we then go ahead to create a function and name which is `main`. Inside the main function, we deploy our contract, console.log the address of the contract, and call the `storeContractData` in order to store the data derive from the contract just deployed. 
+First, we import hardhat and store it inside `hre`. we then go ahead to create a function and name which is `main`. Inside the main function, we deploy our contract, console.log the address of the contract, and call the `storeContractData` to store the data derived from the contract just deployed. 
 
-Next is `storeContractData` function. Which takes in contract data, creates two files `Trust-address.json` and `Trust.json`. `Trust-address.json` stores the address of our trust smart contract. `Trust.json` stores the contract data, inside where you can find th eco=tract abi.
+Next is the `storeContractData` function. Which takes in contract data, and creates two files `Trust-address.json` and `Trust.json`. `Trust-address.json` stores the address of our trust smart contract. `Trust.json` stores the contract data, inside where you can find the contract ABI.
 
-lastly, we invoke the function by calling it with bracket.
+lastly, we invoke the function by calling it with a bracket.
 
 # Step 3: Smart contract
-In this step of the tutorial, we want to write th esmart contract. It will be written using Solidity. 
+In this step of the tutorial, we want to write the smart contract. It will be written using Solidity. 
 
-Go to contracts/ folder and create a new File, then call the file Trust.sol. Open the file let start writng the smart contract.
+Go to contracts/ folder and create a new File, then call the file `Trust.sol`. Open the file let start writing the smart contract.
 
-Before we go deep into the contract, let me give oyu a hint of how the contract work. Trust is an escrow contract that crate trust between two party involved in a business transaction. It holds the funds that is to be transferred to to the second party inside the contract and release it only when aggreement is reached between the two party. It goes through a series of process ot come to an agreement between the parties. The process is as follows.
+Before we go deep into the contract, let me give you a hint of how the contract work. **Trust** is an escrow contract that crate trust between two parties involved in a business transaction. It holds the funds that are to be transferred to the second party inside the contract and releases it only when an agreement is reached between the two parties. It goes through a series of processes to agree with the parties. The process is as follows.
 
-1. The seller comes to the platform to create an bond and adds the address of the buyer into the bond
-2. The buyer now cones to sign the bond created by the seller just to give theier consent that they are involve in the deal
-3. After the seller had created the bond and the buyer had signed the bund, the bond is forward to the admin to a valid.
-4. After an admin has validated the bond, then the two parties make confirmation that they have receive money and goods repectively.
-5. After both party have made confirmation and are satisfied, an admin closed the bond.
+1. The seller comes to the platform to create a bond and adds the address of the buyer into the bond
+2. The buyer now cones to sign the bond created by the seller just to give their consent that they are involved in the deal
+3. After the seller had created the bond and the buyer had signed the bond, the bond is forwarded to the admin to a valid.
+4. After an admin has validated the bond, then the two parties make confirmation that they have received money and goods respectively.
+5. After both parties have made confirmation and are satisfied, an admin closed the bond.
 
-The picture below describe the whole process using a diagramatic representation.
+The picture below describes the whole process using a diagrammatic representation.
 
 ![Process flow](./pictures/4-process-flowchart.png)
 
-After understand how the smart contract works, let us go ahead to write the samrt contract.
+After understanding how the smart contract works, let us go ahead to write the smart contract.
 
-Inside the trust.sol file you created earlier, add this line into it.
+Inside the `trust.sol` file you created earlier, add this line into it.
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 ```
-The above code lines is usually the firlt line of code that is expected to be in our smrat contract. Line one is our license specification line. It let's the blockchain know that our file has a license, and in our code, we are using the MIT license. The second line is the solidity programming language compiler version. Solity has different compiler, that is why we have to state which one shouold compile our code. In our situation, the compiler that will compile our code is the `0.8.0` compiler and above. Anything below this will through an error and will not compile our code.
+The above code lines are usually the first line of code that is expected to be in our smart contract. Line one is our license specification line. It lets the blockchain know that our file has a license, and in our code, we are using the MIT license. The second line is the solidity programming language compiler version. Solity has a different compiler, which is why we have to state which one should compile our code. In our situation, the compiler that will compile our code is the `0.8.0` compiler and above. Anything below this will through an error and will not compile our code.
 
 We will next create our contract body.
 
-```javascript
+```solidity
 contract Trust {}
 ```
-The line we added to the file above creates a Contract body for us. We are using the keywork `contract` to let the compiler know that this is a contract. Follow by the keyword is the contract name. Ww want to name our contract Trust. Inside the braces is where we will write all the codes for thus contract.
+The line we added to the file above creates a Contract body for us. We are using the keyword `contract` to let the compiler know that this is a contract. Follow by the keyword is the contract name. We want to name our contract Trust. Inside the braces is where we will write all the codes for this contract.
 
-Inside our contract the first things to do is to create a struct. 
+Inside our contract, the first thing to do is to create a struct. 
 
-```javascript
+```solidity
     struct Bond {
         uint256 id; 
         string name; 
@@ -204,32 +204,32 @@ Inside our contract the first things to do is to create a struct.
         bool completed; 
     }
 ```
-We create a struct and name it Bond. Struct is a complex data type in solidity that let you create a single variable that can holds many data type at the same time. Let me break down what the variables of th struct do.
+We create a struct and name it Bond. Struct is a complex data type in Solidity that let you create a single variable that can hold many data type at the same time. Let me break down what the variables of the struct do.
 
 - id - unique identifier of the bond
-- name - string to describe what the bond is all abot
-- amount - amount the other party is expected to pay. the platform get's 10% as fee
-- creator - the address that create the bond
-- parties - addreses of creator and second party involved
+- name - string to describe what the bond is all about
+- amount - amount the other party is expected to pay. the platform get's 10% as a fee
+- creator - the address that creates the bond
+- parties - addresses of the creator and the second party involved
 - confirmations - evidence of both parties confirming the deal is completed
-- signed - if a deal is sign or not
-- validated - if a deal is valited by an admin
+- signed - if a deal is signed or not
+- validated - if a deal is validated by an admin
 - completed - if a deal is completed and both parties are satisfied
 
-so that is is for the struct in our contract. next is to create the variables keep track of some data inside the contract.
+so that is for the struct of our contract. next is to create the variables to keep track of some data inside the contract.
 
-```javascript
+```solidity
  uint256 ids; 
     address payable immutable admin;
     uint256 adminFees;
     mapping(uint256 => Bond) bonds; 
 ```
 
-ids will assign IDs to the bonds users will create in our contract. admin will be the one responsible for validating and closing bonds between party involved. adminfees is a constant that determines how much the platform will change for their service. bonds is a mapping storing all bonds anyone creates an dthen mapping an unsigned interger to that bond for accessibliity.
+The `ids` variable will assign IDs to the bonds users will create in our contract. admin will be the one responsible for validating and closing bonds between the parties involved. `adminfees` is a constant that determines how much the platform will charge for their service. `bonds` is a mapping storing all bonds anyone creates and then maps an unsigned integer to that bond for accessibility.
 
 We will not create an event and constructor for our contract.
 
-```javascript
+```solidity
     event CreateBond(
         uint256 id,
         string name,
@@ -241,7 +241,7 @@ We will not create an event and constructor for our contract.
         admin = payable(msg.sender);
     }
 ```
-The event we created (CreateBond) will be emitted when we create a new bond. if you notice, you will ovserve we used keyword indexed for party one and party 2. This is because we want them to be querried easily by their name from the transaction logs.
+The event we created (CreateBond) will be emitted when we create a new bond. if you notice, you will observe we used keyword indexed for party one and party 2. This is because we want them to be queried easily by their name from the transaction logs.
 
 The constructor sets the admin variable as the address of the person that deployed the contract.
 
@@ -249,7 +249,7 @@ The constructor sets the admin variable as the address of the person that deploy
 
 The first function we will create inside our contract is the `createBond` function.
 
-```javascript
+```solidity
     function createBond(
         string calldata _name,
         uint256 _expectedAmount,
@@ -273,11 +273,11 @@ The first function we will create inside our contract is the `createBond` functi
         ids++;
     }
 ```
-The function is responsivle for create bonds between the parties involved in the deal. If you noticed, the function argument uses calldata to store the strings it is accepting. calldata is a memory allocation that is similar to memory, but the difference is that calldata is constant an can only be used in function arguments. Anyone can call this function to create a bond.
+The function is responsible for creating bonds between the parties involved in the deal. If you noticed, the function argument uses calldata to store the strings it is accepting. The **calldata** is a memory allocation that is similar to memory, but the difference is that calldata is constant and can only be used in function arguments. Anyone can call this function to create a bond.
 
 The second function is the `signBond` function.
 
-```javascript
+```solidity
     function signBond(uint256 _bondId) public {
         Bond storage bond = bonds[_bondId];
         require(
@@ -287,11 +287,11 @@ The second function is the `signBond` function.
         bond.signed = true;
     }
 ```
-The sign bond function takes as argument the bond id, get the bond object frm storage, do some validation to ensure the right persion is the one sjgning the bond, and then proceed to sign the bond. Only the second party involved in a bond can call this function.
+The `signBond` function takes as an argument the bond id, gets the bond object from storage, does some validation to ensure the right person is the one signing the bond, and then proceeds to sign the bond. Only the second party involved in a bond can call this function.
 
 The next function is the `validateBond`
 
-```javascript
+```solidity
     function validateBond(uint256 _bondId) public {
         Bond storage bond = bonds[_bondId];
         require(msg.sender == admin, "Only admin can validate bond");
@@ -302,11 +302,11 @@ The next function is the `validateBond`
         bond.validated = true;
     }
 ```
-The function validated a bond that has been created and signed by the second parties involved. It accepts the bond id as argument and use it to get the bond from storage. It also do some checks to make sure it is the admin calling the function and the bond is already sign. It then continue to the next line which validatd the bond.
+The function validated a bond that has been created and signed by the second parties involved. It accepts the bond id as an argument and uses it to get the bond from storage. It also does some checks to make sure it is the admin calling the function and the bond is already signed. It then continues to the next line which validates the bond.
 
 The next function is `makeConfirmation`
 
-```javascript
+```solidity
  // User confirms they have completed their part of deal
     function makeConfirmation(uint256 _bondId) public payable {
         Bond storage bond = bonds[_bondId];
@@ -330,11 +330,11 @@ The next function is `makeConfirmation`
         }
     }
 ```
-This is th function that the parties involved call to notify the smart contract that they have complete ther respective part of the deal. For this function to be called on a bond, the bond must have to be signed and valiated by the admin. Only the two parties involved in the bond can call this function on that bond. When the second party (buyer) call this function, they are expectd to pay the amount specified in the bond, else it will not go through.
+This is the function that the parties involved call to notify the smart contract that they have completed their respective part of the deal. For this function to be called on a bond, the bond must have been signed and validated by the admin. Only the two parties involved in the bond can call this function on that bond. When the second party (buyer) calls this function, they are expected to pay the amount specified in the bond, or else it will not go through.
 
 The next function is `closeBond`
 
-```javascript
+```solidity
     // Platform confirms agreement has been esterblished between two parties and close bond
     // Only admin can close bond
     // Both parties has to first confirm bond is completed before bond can be closed
@@ -361,9 +361,9 @@ The next function is `closeBond`
         bond.completed = true;
     }
 ```
-This is the function the platform uses to confirm the an agreement has been reached between the two party involved and then close the bond. Only the admin can call this function, the bond must have been validated, it must have been signed by both party involved. After all checks have been done, the function withdraws it's own percent and send the rest to the first party (seller). It then completes the bond and closes it.
+This is the function the platform uses to confirm that an agreement has been reached between the two parties involved and then close the bond. Only the admin can call this function, the bond must have been validated, and it must have been signed by both parties involved. After all checks have been done, the function withdraws its own percent and sends the rest to the first party (seller). It then completes the bond and closes it.
 
-```javascript
+```solidity
     // Get total fees sgored in the contract
     function getContractBalance() public view returns (uint256) {
         require(msg.sender == admin, "Only admin can check balance");
@@ -412,37 +412,37 @@ This is the function the platform uses to confirm the an agreement has been reac
     }
 }
 ```
-The next couple of functions defined in the smart contract are pretty straitforwared. 
+The next couple of functions defined in the smart contract is pretty straightforward. 
 
-- `getContractBalance` - Fetches the the total amount of funds stored in the contract. Only admin can call this function
-- `getTotalAdminFees` - This function gett the total amount of fees accumulated by the platform from the 10% it grt's from every bond completed. Only admin can call this function
-- `withdrawAccumulatedFees` - This function simply let's the admin to withdraw the fees accumulated in the platfrom.
-- `viewBond` - This function returns the details of a partifular bond.
+- `getContractBalance` - Fetches the total amount of funds stored in the contract. Only the admin can call this function
+- `getTotalAdminFees` - This function gett the total amount of fees accumulated by the platform from the 10% it gets from every bond completed. Only the admin can call this function
+- `withdrawAccumulatedFees` - This function simply lets the admin withdraw the fees accumulated in the platform.
+- `viewBond` - This function returns the details of a particular bond.
 
 That is the end of our functions and the end of our contract as well.
 
-In the next stop we will deploy the contract to celo using hardhat and all the setup we creaed earlier.
+In the next section, we will deploy the contract to celo using hardhat and all the setups we created earlier.
 
 # Step 4: Deployment
-IN this step, we will deploy the smart contract.
+In this step, we will deploy the smart contract.
 
-First thing to do is to installed the packages we missed earlier. Ruhn the command below to install the packages
+The first thing to do is to install the packages we missed earlier. Ruhn the command below to install the packages
 
 ```bash
 npm install @nomiclabs/hardhat-waffle dotenv
 ```
-We just installed the hardhat-waffle package and dotenv package which will help us to deployment of the smart contract.
+We just installed the hardhat-waffle package and dotenv package which will help us with the deployment of the smart contract.
 
-Before deploying the smart contract, one last thign to do is to create a `.env` file in the root directory and add your private key inside the file.
+Before deploying the smart contract, one last thing to do is to create a `.env` file in the root directory and add your private key inside the file.
 
 ```bash
 PRIVATE_KEY="enterprivatekeyhere"
 ```
-Save the file and add it yo your gitignore file so that you don't push it to Github. 
+Save the file and add it to your `gitignore` file so that you don't push it to GitHub. 
 
-_Please note that your private key should be kept secret to you alone and not shared with anyone. If someone has your private key, then they can use it to stel the funds in your wallet_
+_Please note that your private key should be kept secret to you alone and not shared with anyone. If someone has your private key, then they can use it to steal the funds in your wallet_
 
-Now that everything is set, you this command to deploy your contract
+Now that everything is set, you use this command to deploy your contract
 
 ```bash
 npx hardhat run scripts/deploy.js --network alfajores
@@ -451,16 +451,16 @@ After running the command above, The output in your command line should look sim
 
 ![Deploy output ](./pictures/4-contract-deploy.PNG).
 
-The contract has deployed to celo testnet (alfajores). You can also see the deployment live on Celo testnet by pasting the contract address in celo alfajores explorer.
+The contract has been deployed to Celo testnet (Alfajores). You can also see the deployment live on Celo testnet by pasting the contract address in celo alfajores explorer.
 
 ![testnet view](./pictures/6-testnet.PNG)
 
 # What to do from here?
-Now that you have completely built a full-fledge smart contract that can solve a complex problem, you can do any or all of the following to improve this new skills set you just added yo your knowledge box.
+Now that you have completely built a full-fledged smart contract that can solve a complex problem, you can do any or all of the following to improve this new skill set you just added to your knowledge box.
 
-- Write testcases for the smart contract
-- Build a frontend that connect the contract to the blockchain
-- Add more functionalities that will improve on the one we added
+- Write test cases for the smart contract
+- Build a front end that connect the contract to the blockchain
+- Add more functionalities that will improve on the ones we added
 
 # About me
-My name is Adamu Peter, a web developer who recently developed passion fo rblockchain technology and I have since been building project and improving the knowledge in the space.
+My name is Adamu Peter, a web developer who recently developed a passion for blockchain technology and I have since been building projects and improving my knowledge in the space.
