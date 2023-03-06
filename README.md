@@ -4,6 +4,21 @@
 - Hardhat:  Hardhat is a development environment that helps developers in testing, compiling, deploying, and debugging dApps on the Ethereum blockchain. [Learn more](https://hardhat.org)
 - We want to build a mini project to explain what Celo and Hardhat are.
 
+
+## Table of Content
+- [Getting Started with Celo and Hardhat](#getting-started-with-celo-and-hardhat)
+  - [Table of Content](#table-of-content)
+  - [Prerequisite](#prerequisite)
+  - [What you will learn from this tutorial](#what-you-will-learn-from-this-tutorial)
+  - [Aims](#aims)
+  - [Step 1: Installing hardhat](#step-1-installing-hardhat)
+  - [Step 2: Hardhat configuration](#step-2-hardhat-configuration)
+  - [Step 3: Smart contract](#step-3-smart-contract)
+  - [Step 4: Deployment](#step-4-deployment)
+  - [What to do from here?](#what-to-do-from-here)
+  - [About me](#about-me)
+
+
 ## Prerequisite
 - NodeJs
 - NPM
@@ -67,7 +82,7 @@ Your project directory should look like this after installing Hardhat
 
 ![hardhat folder structure](./pictures/3-hh-folder-structure.PNG)
 
-# Step 2: Hardhat configuration
+## Step 2: Hardhat configuration
 
 After installing Hardhat, the next step is to configure it to the taste of the project we are working on. In our case, we want to achieve the following:
 - Deploy our contract to the Celo blockchain
@@ -155,7 +170,7 @@ Next is the `storeContractData` function. Which takes in contract data, and crea
 
 lastly, we invoke the function by calling it with a bracket.
 
-# Step 3: Smart contract
+## Step 3: Smart contract
 In this step of the tutorial, we want to write the smart contract. It will be written using Solidity. 
 
 Go to contracts/ folder and create a new File, then call the file `Trust.sol`. Open the file let start writing the smart contract.
@@ -423,7 +438,7 @@ That is the end of our functions and the end of our contract as well.
 
 In the next section, we will deploy the contract to celo using hardhat and all the setups we created earlier.
 
-# Step 4: Deployment
+## Step 4: Deployment
 In this step, we will deploy the smart contract.
 
 The first thing to do is to install the packages we missed earlier. Ruhn the command below to install the packages
@@ -455,12 +470,12 @@ The contract has been deployed to Celo testnet (Alfajores). You can also see the
 
 ![testnet view](./pictures/6-testnet.PNG)
 
-# What to do from here?
+## What to do from here?
 Now that you have completely built a full-fledged smart contract that can solve a complex problem, you can do any or all of the following to improve this new skill set you just added to your knowledge box.
 
 - Write test cases for the smart contract
 - Build a front end that connect the contract to the blockchain
 - Add more functionalities that will improve on the ones we added
 
-# About me
+## About me
 My name is Adamu Peter, a web developer who recently developed a passion for blockchain technology and I have since been building projects and improving my knowledge in the space.
