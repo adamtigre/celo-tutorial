@@ -9,38 +9,38 @@
 - [Getting Started with Celo and Hardhat](#getting-started-with-celo-and-hardhat)
   - [Table of Content](#table-of-content)
   - [Prerequisite](#prerequisite)
-  - [What you will learn from this tutorial](#what-you-will-learn-from-this-tutorial)
-  - [Aims](#aims)
-  - [Step 1: Installing hardhat](#step-1-installing-hardhat)
-  - [Step 2: Hardhat configuration](#step-2-hardhat-configuration)
-  - [Step 3: Smart contract](#step-3-smart-contract)
-  - [Step 4: Deployment](#step-4-deployment)
+  - [Requirements](#requirements)
+  - [Objectives of this Tutorial](#objectives-of-this-tutorial)
+  - [Project Setup](#project-setup)
+    - [Step 1: Installing Hardhat](#step-1-installing-hardhat)
+    - [Step 2: Hardhat configuration](#step-2-hardhat-configuration)
+  - [Smart contract](#smart-contract)
+  - [Deployment](#deployment)
   - [What to do from here?](#what-to-do-from-here)
   - [About me](#about-me)
 
 
 ## Prerequisite
-- NodeJs
-- NPM
-- VSCode
-- Solidity
-- JavaScript
-- Command line
+To be able to follow this tutorial, you need to have a basic understanding of:
+- [Solidity](https://soliditylang.org/)
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- What is a command line
 
 
-## What you will learn from this tutorial
-- How to write Solidity codes
-- How to deploy Solidity codes to the Celo blockchain
-- How to use Hardhat to compile and deploy your solidity code
-- Usage of the command line
+## Requirements
 
-## Aims 
-This tutorial aims to teach you the following:
-- How to write a smart contract with Solidity
-- How to deploy the smart contract using Hardhat
-- Interacting with Celo Testnet
+- [NodeJs](https://nodejs.org/en/) installed.
+- An IDE installed. For this tutorial, we will use [VSCode](https://code.visualstudio.com/).
 
-## Step 1: Installing hardhat
+## Objectives of this Tutorial
+- How to write Solidity code.
+- How to deploy Solidity codes to the Celo blockchain.
+- How to use Hardhat to compile and deploy your Solidity code.
+- Usage of the command line.
+
+## Project Setup
+
+### Step 1: Installing Hardhat
 Since we will be using Hardhat for this tutorial, the first thing to do is to install Hardhat into your computer. Follow the steps below to install hardhat into your computer system.
 
 > **Note** Before you carry out the steps below, please ensure you have node and npm installed on your system. If you don't have node installed, go to [this link](https://www.guru99.com/download-install-node-js.html) to learn how to install it. Npm mostly comes with node. So when you install node, you might have automatically installed npm.
@@ -82,7 +82,7 @@ Your project directory should look like this after installing Hardhat
 
 ![hardhat folder structure](./pictures/3-hh-folder-structure.PNG)
 
-## Step 2: Hardhat configuration
+### Step 2: Hardhat configuration
 
 After installing Hardhat, the next step is to configure it to the taste of the project we are working on. In our case, we want to achieve the following:
 - Deploy our contract to the Celo blockchain
@@ -168,9 +168,9 @@ First, we import hardhat and store it inside `hre`. we then go ahead to create a
 
 Next is the `storeContractData` function. Which takes in contract data, and creates two files `Trust-address.json` and `Trust.json`. `Trust-address.json` stores the address of our trust smart contract. `Trust.json` stores the contract data, inside where you can find the contract ABI.
 
-lastly, we invoke the function by calling it with a bracket.
+Lastly, we invoke the function by calling it with a bracket.
 
-## Step 3: Smart contract
+## Smart contract
 In this step of the tutorial, we want to write the smart contract. It will be written using Solidity. 
 
 Go to contracts/ folder and create a new File, then call the file `Trust.sol`. Open the file let start writing the smart contract.
@@ -221,17 +221,17 @@ Inside our contract, the first thing to do is to create a struct.
 ```
 We create a struct and name it Bond. Struct is a complex data type in Solidity that let you create a single variable that can hold many data type at the same time. Let me break down what the variables of the struct do.
 
-- id - unique identifier of the bond
-- name - string to describe what the bond is all about
-- amount - amount the other party is expected to pay. the platform get's 10% as a fee
-- creator - the address that creates the bond
-- parties - addresses of the creator and the second party involved
-- confirmations - evidence of both parties confirming the deal is completed
-- signed - if a deal is signed or not
-- validated - if a deal is validated by an admin
-- completed - if a deal is completed and both parties are satisfied
+- `id` - unique identifier of the bond
+- `name` - string to describe what the bond is all about
+- `amount` - amount the other party is expected to pay. the platform get's 10% as a fee
+- `creator` - the address that creates the bond
+- `parties` - addresses of the creator and the second party involved
+- `confirmations` - evidence of both parties confirming the deal is completed
+- `signed` - if a deal is signed or not
+- `validated` - if a deal is validated by an admin
+- `completed` - if a deal is completed and both parties are satisfied
 
-so that is for the struct of our contract. next is to create the variables to keep track of some data inside the contract.
+so that is it for the struct of our contract. next is to create the variables to keep track of some data inside the contract.
 
 ```solidity
  uint256 ids; 
@@ -425,7 +425,6 @@ This is the function the platform uses to confirm that an agreement has been rea
         validated = bond.validated;
         completed = bond.completed;
     }
-}
 ```
 The next couple of functions defined in the smart contract is pretty straightforward. 
 
@@ -438,7 +437,7 @@ That is the end of our functions and the end of our contract as well.
 
 In the next section, we will deploy the contract to celo using hardhat and all the setups we created earlier.
 
-## Step 4: Deployment
+## Deployment
 In this step, we will deploy the smart contract.
 
 The first thing to do is to install the packages we missed earlier. Ruhn the command below to install the packages
@@ -471,7 +470,7 @@ The contract has been deployed to Celo testnet (Alfajores). You can also see the
 ![testnet view](./pictures/6-testnet.PNG)
 
 ## What to do from here?
-Now that you have completely built a full-fledged smart contract that can solve a complex problem, you can do any or all of the following to improve this new skill set you just added to your knowledge box.
+Now that you have completely built a full-fledged smart contract that can solve a complex problem, you can do any or all of the following to improve this new skill set you just added to your knowledge box:
 
 - Write test cases for the smart contract
 - Build a front end that connect the contract to the blockchain
