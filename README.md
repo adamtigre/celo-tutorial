@@ -16,7 +16,7 @@
     - [Step 2: Hardhat configuration](#step-2-hardhat-configuration)
   - [Smart contract](#smart-contract)
   - [Deployment](#deployment)
-  - [What to do from here?](#what-to-do-from-here)
+  - [Conclusion](#conclusion)
   - [About me](#about-me)
 
 
@@ -262,14 +262,24 @@ The constructor sets the admin variable as the address of the person that deploy
 
 **Contract Functions**
 
-The first function we will create inside our contract is the `createBond` function.
+The first function we will create inside our contract is the `createBond()` function.
 
 ```solidity
+    /**
+        * @dev Validation checks are performed on the input data to prevent invalid data to be stored
+        * @notice Allows users to create a bond
+        * @param _name Name of bond
+        * @param _expectedAmount Amount the second party has to pay
+        * @param _secondParty Address of the second party
+     */
     function createBond(
         string calldata _name,
         uint256 _expectedAmount,
         address _secondParty
     ) public {
+        require(_secondParty != address(0), "Invalid second party");
+        require(_expectedAmount > 0, "Invalid amount");
+        require(bytes(_name).length > 0, "Empty name");
         address[2] memory parties = [msg.sender, _secondParty];
         address[2] memory confirmations = [address(0), address(0)];
         uint256 amount = _expectedAmount * 1 ether; // amount is converted to ether
@@ -287,12 +297,23 @@ The first function we will create inside our contract is the `createBond` functi
         emit CreateBond(ids, _name, msg.sender, _secondParty);
         ids++;
     }
-```
-The function is responsible for creating bonds between the parties involved in the deal. If you noticed, the function argument uses calldata to store the strings it is accepting. The **calldata** is a memory allocation that is similar to memory, but the difference is that calldata is constant and can only be used in function arguments. Anyone can call this function to create a bond.
 
-The second function is the `signBond` function.
+```
+This function is responsible for creating bonds between the parties involved in the deal. The function takes three parameters:
+1. `_name`- name of the bond
+2. `_expectedAmount` - The amount the second party has to pay
+3. `_secondParty` - The address of the second party
+
+You might have noticed that we are using the *calldata* to store the arguments for the `_name` parameter. The **calldata** is a memory allocation that is similar to memory, but the difference is that the calldata is *immutable* and can only be used in function arguments. The function first checks if the input arguments are valid and if any of the validation checks performed by the require statements fail, the transaction fails with an error message. Otherwise, the function carries on to create a new bond which will be saved to the state of the smart contract. Finally, the event `CreateBond` is emitted and the `ids` variable is incremented.
+
+The second function is the `signBond()` function.
 
 ```solidity
+    /**
+        * @dev Only second parties have access to sign their respective bonds
+        * @notice Allows the second party to sign a bond
+        * @param _bondId ID of the bond
+     */
     function signBond(uint256 _bondId) public {
         Bond storage bond = bonds[_bondId];
         require(
@@ -302,11 +323,16 @@ The second function is the `signBond` function.
         bond.signed = true;
     }
 ```
-The `signBond` function takes as an argument the bond id, gets the bond object from storage, does some validation to ensure the right person is the one signing the bond, and then proceeds to sign the bond. Only the second party involved in a bond can call this function.
+The `signBond` function takes as a parameter `_bondId` which is then used to fetch a bond object from storage. It then checks if the second party of the bond is the sender of the transaction and then proceeds to sign the bond.
 
-The next function is the `validateBond`
+The next function is the `validateBond()`
 
 ```solidity
+    /**
+        * @dev Only the admin has access to validate bonds
+        * @notice Allows the admin to validate a bond
+        * @param _bondId ID of the bond
+     */
     function validateBond(uint256 _bondId) public {
         Bond storage bond = bonds[_bondId];
         require(msg.sender == admin, "Only admin can validate bond");
@@ -317,12 +343,16 @@ The next function is the `validateBond`
         bond.validated = true;
     }
 ```
-The function validated a bond that has been created and signed by the second parties involved. It accepts the bond id as an argument and uses it to get the bond from storage. It also does some checks to make sure it is the admin calling the function and the bond is already signed. It then continues to the next line which validates the bond.
+This function validates a bond that has been created and signed by the second party involved. It accepts the `_bondId` as a parameter and uses it to get the bond from storage. It also does some checks to make sure it is the admin calling the function and the bond is already signed. It then continues to the next line which validates the bond.
 
-The next function is `makeConfirmation`
+The next function is `makeConfirmation()`
 
 ```solidity
- // User confirms they have completed their part of deal
+    /**
+        * @dev Only the two parties involved in a bond can make confirmations
+        * @notice Allows both parties of a bond to confirm their part of the deal
+        * @param _bondId ID of the bond
+     */
     function makeConfirmation(uint256 _bondId) public payable {
         Bond storage bond = bonds[_bondId];
         require(bond.signed == true, "Bond not signed yet");
@@ -347,12 +377,15 @@ The next function is `makeConfirmation`
 ```
 This is the function that the parties involved call to notify the smart contract that they have completed their respective part of the deal. For this function to be called on a bond, the bond must have been signed and validated by the admin. Only the two parties involved in the bond can call this function on that bond. When the second party (buyer) calls this function, they are expected to pay the amount specified in the bond, or else it will not go through.
 
-The next function is `closeBond`
+The next function is `closeBond()`
 
 ```solidity
-    // Platform confirms agreement has been esterblished between two parties and close bond
-    // Only admin can close bond
-    // Both parties has to first confirm bond is completed before bond can be closed
+    /**
+        * @dev 90% of the bond's amount is sent to the bond creator and the remaining 10% stays in the smart contract as platform fees
+        * @notice Allows the admin to confirm and close a bond
+        * @notice Both parties have to first confirm their part of the deal
+        * @param _bondId ID of the bond
+     */
     function closeBond(uint256 _bondId) public {
         Bond storage bond = bonds[_bondId];
         require(payable(msg.sender) == admin, "Only admin can close bond");
@@ -365,18 +398,20 @@ The next function is `closeBond`
             bond.confirmations[1] != address(0),
             "Second party has not confirmed transaction"
         );
+        require(bond.completed == false, "Bond is closed.");
 
         // First transfer funds to first party
         // 10% of funds is deducted for platform fee
         address payable firstParty = payable(bond.parties[0]);
         uint256 fund = (bond.amount * 90) / 100;
         adminFees += (bond.amount * 10) / 100; // reserve 10% for platform fee
+        bond.completed = true;
         (bool success, ) = firstParty.call{value: fund}("");
         require(success, "Failed to send funds to second party");
-        bond.completed = true;
+        
     }
 ```
-This is the function the platform uses to confirm that an agreement has been reached between the two parties involved and then close the bond. Only the admin can call this function, the bond must have been validated, and it must have been signed by both parties involved. After all checks have been done, the function withdraws its own percent and sends the rest to the first party (seller). It then completes the bond and closes it.
+This is the function the platform's admin uses to confirm that an agreement has been reached between the two parties involved and then to close the bond. Only the admin can call this function, the bond must have been validated, it must have been signed by both parties involved, and the bond hasn't yet been completed. After all checks have been done, the function deducts the platform fee from the bond's amount, closes the bond, and sends the rest to the first party (seller).
 
 ```solidity
     // Get total fees sgored in the contract
@@ -392,15 +427,19 @@ This is the function the platform uses to confirm that an agreement has been rea
         return adminFees;
     }
 
-    // Withdraw accumulated fees in contract
+    /**
+        * @dev Only the admin can withdraw accumulated fees
+        * @notice Withdraws accumulated fees in the smart contract
+     */
     function withdrawAccumulatedFees() public returns (bool) {
         require(
             msg.sender == admin,
             "Only admin can withdraw accumulated fees"
         );
         uint256 bal = adminFees;
+        adminFees = 0; // reset value before withdrawal
         (bool success, ) = payable(msg.sender).call{value: bal}("");
-        adminFees = 0; // reset value after withdrawal
+        require(success, "Transfer failed");
         return success;
     }
 
@@ -428,10 +467,10 @@ This is the function the platform uses to confirm that an agreement has been rea
 ```
 The next couple of functions defined in the smart contract is pretty straightforward. 
 
-- `getContractBalance` - Fetches the total amount of funds stored in the contract. Only the admin can call this function
-- `getTotalAdminFees` - This function gett the total amount of fees accumulated by the platform from the 10% it gets from every bond completed. Only the admin can call this function
-- `withdrawAccumulatedFees` - This function simply lets the admin withdraw the fees accumulated in the platform.
-- `viewBond` - This function returns the details of a particular bond.
+- `getContractBalance()` - Fetches the total amount of funds stored in the contract. Only the admin can call this function
+- `getTotalAdminFees()` - This function gett the total amount of fees accumulated by the platform from the 10% it gets from every bond completed. Only the admin can call this function
+- `withdrawAccumulatedFees()` - This function simply lets the admin withdraw the fees accumulated in the platform.
+- `viewBond()` - This function returns the details of a particular bond.
 
 That is the end of our functions and the end of our contract as well.
 
@@ -469,7 +508,7 @@ The contract has been deployed to Celo testnet (Alfajores). You can also see the
 
 ![testnet view](./pictures/6-testnet.PNG)
 
-## What to do from here?
+## Conclusion
 Now that you have completely built a full-fledged smart contract that can solve a complex problem, you can do any or all of the following to improve this new skill set you just added to your knowledge box:
 
 - Write test cases for the smart contract
